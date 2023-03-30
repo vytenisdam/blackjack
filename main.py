@@ -46,7 +46,7 @@ def blackjack():
         play_again = input(f"Hey {player_name}, would you like to play again?")
         cls()
     elif player_points == 21:
-        print(f'{player_name} won with Blackjack.')
+        print(f'{player_name} Won with Blackjack.')
         play_again = input(f"Hey {player_name}, would you like to play again?")
         cls()
     elif computer_points == 21:
@@ -60,6 +60,7 @@ def blackjack():
             if draw_card == 'y' and player_points < 21:
                 extra_card = cards.index(random.choice(cards))
                 indexed_extra_card = cards[extra_card]
+                player_points_11 = player_points + 11
                 #If drawn card is Ace and sum of points > 21 than ace value becomes 1.
                 if player_points > 10 and indexed_extra_card == 11:
                     hand.append(cards[extra_card])
@@ -70,16 +71,15 @@ def blackjack():
                     hand.append(cards[extra_card])
                     player_points += int(hand[-1])       
                     print(f' Your hand: {hand}')
-                # if theres an ace in hande and next card makes core > 21 change ace value to 1.
-                elif 11 in hand and player_points + 11 > 21:
-                    hand.append(cards[extra_card])
-                    player_points -= 10
-                    player_points += int(hand[-1])
-                    print(f' Your hand: {hand}')
+                # if theres an ace in hande and next card makes core > 21 change ace value to 1..........
                 # any other card has its own unchanged value.
                 else: 
                     hand.append(cards[extra_card])
-                    player_points += int(hand[-1])       
+                    player_points += int(hand[-1])
+                    if 11 in hand and player_points > 21:
+                        hand.remove(11)
+                        hand.append(1)
+                        player_points -= 10       
                     print(f' Your hand: {hand}')
                     if player_points > 21:
                         should_continue = False
@@ -108,6 +108,8 @@ def blackjack():
             cls()
         elif computer_points == player_points:
             print('Draw game.')
+            print(f'Your hand {hand}')
+            print(f'Computer hand {computer_hand}')
             play_again = input(f"Hey {player_name}, would you like to play again?")
             cls()
         elif computer_points > player_points:
@@ -123,12 +125,12 @@ def blackjack():
             play_again = input(f"Hey {player_name}, would you like to play again?")
             cls()
         #Play one more time.            
-        if play_again == 'y':
-            hand = []
-            computer_hand = []
-            blackjack()
-        else:
-            print('See you later!')
+    if play_again == 'y':
+        hand = []
+        computer_hand = []
+        blackjack()
+    else:
+        print('See you later!')
 #Start of the game.        
 play_game = input('Would you like to play a game of blackjack? Type "y" if so.\n').lower()
 if play_game == "y":
